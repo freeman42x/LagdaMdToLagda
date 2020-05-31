@@ -15,7 +15,6 @@ let
         license = "unknown";
         hydraPlatforms = stdenv.lib.platforms.none;
       };
-
   haskellPackages = if compiler == "default"
                        then pkgs.haskellPackages
                        else pkgs.haskell.packages.${compiler};
@@ -26,4 +25,11 @@ let
 
 in
 
-  if pkgs.lib.inNixShell then drv.env else drv
+  (if pkgs.lib.inNixShell then drv.env else drv).overrideAttrs (_: {
+  shellHook = ''
+    PATH="$PATH:${pkgs.ghc}/bin:${pkgs.cabal-install}/bin:${pkgs.nwjs-sdk}/bin:${pkgs.ghcid}/bin:${
+      ((import
+        (fetchTarball "https://github.com/infinisil/all-hies/tarball/master")
+        { }).selection { selector = p: { inherit (p) ghc865; }; })
+    }/bin"'';
+})
