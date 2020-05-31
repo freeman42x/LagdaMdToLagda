@@ -4,14 +4,14 @@ let
 
   inherit (nixpkgs) pkgs;
 
-  f = { mkDerivation, base, stdenv, text }:
+  f = { mkDerivation, base, stdenv, text, split }:
       mkDerivation {
         pname = "LagdaMdToLagda";
         version = "0.1.0.0";
         src = ./.;
         isLibrary = false;
         isExecutable = true;
-        executableHaskellDepends = [ base text ];
+        executableHaskellDepends = [ base text split ];
         license = "unknown";
         hydraPlatforms = stdenv.lib.platforms.none;
       };

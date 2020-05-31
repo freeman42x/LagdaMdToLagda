@@ -1,16 +1,9 @@
 module Main where
 
-import Data.Text
+import Data.Text hiding (zipWith)
 import Data.Text.IO
 import GHC.IO
 import Prelude hiding (readFile, writeFile, putStrLn)
-
-main :: IO ()
-main = do
-  fileText <- readFile testFileInput
-  writeFile testFileOutput "42"
-
--- getAllFilesFromFolderWithExtension ::
 
 testFileInput :: FilePath
 testFileInput = "/home/neo/Forks/plfa.github.io/src/plfa/part1/Naturals.lagda.md"
@@ -18,12 +11,21 @@ testFileInput = "/home/neo/Forks/plfa.github.io/src/plfa/part1/Naturals.lagda.md
 testFileOutput :: FilePath
 testFileOutput = "/home/neo/Forks/plfa.github.io/src/plfa/part1/Naturals.lagda"
 
-convertFile :: Text -> Text
-convertFile content = "result"
+main :: IO ()
+main = do
+  fileText <- readFile testFileInput
+  writeFile testFileOutput $ convertText fileText
+
+-- TODO getAllFilesFromFolderWithExtension ::
 
 convertText :: Text -> Text
-convertText txt = undefined
+convertText txt = txt
+  where
+    splits = splitOn "```\n" txt
+    alternateCodeBlocks = Prelude.concat $ repeat (["\\begin{code}", "\\end{code}"])
+    conv = undefined
 
-testConvert = convertFile "42"
-
-testReadFile = readFile testFileInput
+convert :: [Text] -> [Text] -> Text
+convert splits alternateCodeBlocks =
+  Data.Text.concat $ Prelude.concat
+    $ zipWith (\a b -> [a, b]) splits alternateCodeBlocks
