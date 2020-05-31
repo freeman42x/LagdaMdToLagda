@@ -1,12 +1,13 @@
 module Main where
 
-import Data.Text hiding (zipWith, last, init)
-import Data.Text.IO
+import Data.Text (Text)
+import qualified Data.Text as DT
+import Data.Text.IO (readFile, writeFile, putStrLn)
 import GHC.IO
-import Prelude hiding (readFile, writeFile, putStrLn)
+import Prelude (concat, zipWith, last, init, repeat, ($), (==))
 
 testFileInput :: FilePath
-testFileInput = "/home/neo/Forks/plfa.github.io/src/plfa/part1/Naturals.lagda.md"
+testFileInput = "/home/neo/Forks/plfa.github.io/src/plfa/part1/NaturalsRen.lagda.md"
 
 testFileOutput :: FilePath
 testFileOutput = "/home/neo/Forks/plfa.github.io/src/plfa/part1/Naturals.lagda"
@@ -22,7 +23,7 @@ main = do
 convertText :: Text -> Text
 convertText txt = conv
   where
-    splits = splitOn "```\n" txt
+    splits = DT.splitOn "```\n" txt
     alternateCodeBlocks = Prelude.concat $ repeat (["\\begin{code}\n", "\\end{code}\n"])
     conv = convert splits alternateCodeBlocks
 
@@ -30,4 +31,4 @@ convert :: [Text] -> [Text] -> Text
 convert splits alternateCodeBlocks = res
   where
     texts = Prelude.concat $ zipWith (\a b -> [a, b]) splits alternateCodeBlocks
-    res = Data.Text.concat $ if last texts == "\\begin{code}\n" then init texts else texts
+    res = DT.concat $ if last texts == "\\begin{code}\n" then init texts else texts

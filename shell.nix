@@ -4,14 +4,14 @@ let
 
   inherit (nixpkgs) pkgs;
 
-  f = { mkDerivation, base, stdenv, text, split }:
+  f = { mkDerivation, base, stdenv, text, split, turtle }:
       mkDerivation {
         pname = "LagdaMdToLagda";
         version = "0.1.0.0";
         src = ./.;
         isLibrary = false;
         isExecutable = true;
-        executableHaskellDepends = [ base text split ];
+        executableHaskellDepends = [ base text split turtle ];
         license = "unknown";
         hydraPlatforms = stdenv.lib.platforms.none;
       };
@@ -27,7 +27,7 @@ in
 
   (if pkgs.lib.inNixShell then drv.env else drv).overrideAttrs (_: {
   shellHook = ''
-    PATH="$PATH:${pkgs.ghc}/bin:${pkgs.cabal-install}/bin:${pkgs.atom}/bin:${
+    PATH="$PATH:${pkgs.ghc}/bin:${pkgs.cabal-install}/bin:${
       ((import
         (fetchTarball "https://github.com/infinisil/all-hies/tarball/master")
         { }).selection { selector = p: { inherit (p) ghc865; }; })
