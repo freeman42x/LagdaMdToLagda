@@ -13,7 +13,6 @@ with nixpkgs;
 let
   compiler = haskell.packages.${ghcVersion};
   drv = compiler.callPackage ./project.nix {};
-  vscodeConfig = (callPackag (import ~/Desktop/vscodeEnv {})).vscodeEnv;
   hie = 
     ((import (fetchTarball "https://github.com/infinisil/all-hies/tarball/master") {})
     .selection { selector = p: { ${ghcVersion} = p.${ghcVersion}; }; });
