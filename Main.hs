@@ -18,6 +18,7 @@ main = do
 
 -- TODO getAllFilesFromFolderWithExtension ::
 
+--  HACK that does the job
 convertText :: Text -> Text
 convertText txt = conv
   where
