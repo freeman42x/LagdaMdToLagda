@@ -5,19 +5,19 @@
     rev = "f75d62941d8ad616bfc334ae19d71a0a6677dd19";
     sha256 = "0n88r4fw1syad9zl7r40r7xlxwx38ni8s9hzyayxssr21ii2p38h";
 }) {}
-, ghcVersion ? "ghc865"
+, ghcVersion ? "ghc882"
 # did'nt have time to look how to add benchmark but it should not be a big deal
-# , doBenchmark ? false 
+# , doBenchmark ? false
 }:
 with nixpkgs;
 let
   compiler = haskell.packages.${ghcVersion};
   drv = compiler.callPackage ./project.nix {};
-  hie = 
+  hie =
     ((import (fetchTarball "https://github.com/infinisil/all-hies/tarball/master") {})
     .selection { selector = p: { ${ghcVersion} = p.${ghcVersion}; }; });
 
-in 
+in
 drv.env.overrideAttrs (shellEnv: {
   buildInputs = shellEnv.buildInputs ++ [
     cabal2nix
