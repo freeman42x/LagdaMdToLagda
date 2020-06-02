@@ -5,9 +5,10 @@ import Data.Text (Text)
 import qualified Data.Text as DT
 import Data.Text.IO (readFile, writeFile, putStrLn)
 import GHC.IO
-import Prelude (concat, zipWith, last, init, repeat, show, ($), (==), Bool(..))
+import Prelude (concat, sequence, zipWith, last, init, repeat, show, (<$>), ($), (.), (==), Bool(..))
 import Prelude as P
-import Turtle.Prelude (lsif, single)
+import Turtle (encodeString)
+import Turtle.Prelude (lsif, single, sort)
 
 -- testFileInput :: FilePath
 -- testFileInput = "/home/neo/Forks/plfa.github.io/src/plfa/part1/NaturalsRen.lagda.md"
@@ -18,19 +19,15 @@ import Turtle.Prelude (lsif, single)
 main :: IO ()
 main = do
   -- * find all files with .lagda.md extension under a folder
-  file <- single $ lsif (\_ -> return True) "/home/neo/Forks/plfa.github.io/src/plfa/part1/"
-  P.putStrLn file
+  files <- sort $ lsif (\_ -> return True) "/home/neo/Forks/plfa.github.io/src/plfa/part1/"
+  sequence_ $ P.putStrLn . encodeString <$> files
 
   -- * read content of all those files as Text
   -- and store both read location and content
   -- * fmap previous to a write location and converted content
   -- * write previous to respective files
-  return ()
 
-  -- fileText <- readFile testFileInput
-  -- writeFile testFileOutput $ convertText fileText
 
--- TODO getAllFilesFromFolderWithExtension ::
 
 --  HACK that does the job
 convertText :: Text -> Text
