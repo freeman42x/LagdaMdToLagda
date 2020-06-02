@@ -20,6 +20,7 @@ let
 in
 drv.env.overrideAttrs (shellEnv: {
   buildInputs = shellEnv.buildInputs ++ [
+    # cabal-install this gives 3.2.0.0 , how to get 3.0.0.0 ?
     cabal2nix
     hie
     (vscode-utils.vscodeEnv {
@@ -37,6 +38,8 @@ drv.env.overrideAttrs (shellEnv: {
       # settings = {};
       # keybindings ={};
     })
+    git
+    atom
   ];
 
   shellHook = ''
