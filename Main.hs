@@ -12,7 +12,7 @@ import           Turtle.Prelude                as TP
 import           System.IO
 
 -- testFileInput :: FilePath
--- testFileInput = "/home/neo/Forks/plfa.github.io/src/plfa/part1/NaturalsRen.lagda.md"
+-- testFileInput = "/home/neo/Forks/plfa.github.io/src/plfa/part1/NaturalsXXX.lagda.md"
 --
 -- testFileOutput :: FilePath
 -- testFileOutput = "/home/neo/Forks/plfa.github.io/src/plfa/part1/Naturals.lagda"
@@ -29,7 +29,10 @@ main = do
       isLagdaMd = isSuffixOf ".lagda.md"
       convertToLagda filePath = withFile filePath ReadMode $ \handle -> do
         fileContent <- hGetContents handle
-        putStrLn fileContent
+        let filePathText = DT.pack filePath
+        let lagdaFilePath = DT.unpack $ DT.replace ".lagda.md" ".lagda" filePathText
+        let convertedFileContent = convertText $ DT.pack fileContent
+        writeFile lagdaFilePath $ DT.unpack convertedFileContent
 
   -- * read content of all those files as Text
   -- and store both read location and content
