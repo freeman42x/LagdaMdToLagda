@@ -9,6 +9,7 @@ import           GHC.IO
 import           Prelude
 import           Turtle
 import           Turtle.Prelude                as TP
+import           System.IO
 
 -- testFileInput :: FilePath
 -- testFileInput = "/home/neo/Forks/plfa.github.io/src/plfa/part1/NaturalsRen.lagda.md"
@@ -22,10 +23,13 @@ main = do
   files <- TP.sort
     $ lstree "/home/neo/Forks/plfa.github.io/src/plfa/"
   let lagdaMdFiles = mfilter isLagdaMd $ encodeString <$> files
-  convertToLagda lagdaMdFiles
+  conv lagdaMdFiles
     where
-      convertToLagda = traverse_ putStrLn
+      conv = traverse_ convertToLagda
       isLagdaMd = isSuffixOf ".lagda.md"
+      convertToLagda filePath = withFile filePath ReadMode $ \handle -> do
+        fileContent <- hGetContents handle
+        putStrLn fileContent
 
   -- * read content of all those files as Text
   -- and store both read location and content
