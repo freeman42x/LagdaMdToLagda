@@ -1,32 +1,12 @@
 module Main where
 
-import           Control.Monad                  ( return )
-import           Data.Text                      ( Text )
+import           Control.Monad
 import qualified Data.Text                     as DT
-import           Data.Text.IO                   ( readFile
-                                                , writeFile
-                                                , putStrLn
-                                                )
+import qualified Data.Text.IO                  as DTI
 import           GHC.IO
-import           Prelude                        ( concat
-                                                , sequence
-                                                , zipWith
-                                                , last
-                                                , init
-                                                , repeat
-                                                , show
-                                                , (<$>)
-                                                , ($)
-                                                , (.)
-                                                , (==)
-                                                , Bool(..)
-                                                )
-import qualified Prelude                       as P
-import           Turtle                         ( encodeString )
-import           Turtle.Prelude                 ( lsif
-                                                , single
-                                                , sort
-                                                )
+import           Prelude
+import           Turtle
+import           Turtle.Prelude
 
 -- testFileInput :: FilePath
 -- testFileInput = "/home/neo/Forks/plfa.github.io/src/plfa/part1/NaturalsRen.lagda.md"
@@ -39,7 +19,7 @@ main = do
   -- * find all files with .lagda.md extension under a folder
   files <- sort
     $ lsif (\_ -> return True) "/home/neo/Forks/plfa.github.io/src/plfa/part1/"
-  P.sequence_ $ P.putStrLn . encodeString <$> files
+  sequence_ $ putStrLn . encodeString <$> files
 
   -- rewrite: traverse_ (putStrLn . encodeString) files
 
