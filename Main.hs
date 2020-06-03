@@ -1,12 +1,14 @@
 module Main where
 
 import           Control.Monad
+import           Data.Foldable
+import           Data.List
 import qualified Data.Text                     as DT
 import qualified Data.Text.IO                  as DTI
 import           GHC.IO
 import           Prelude
 import           Turtle
-import           Turtle.Prelude
+import           Turtle.Prelude                as TP
 
 -- testFileInput :: FilePath
 -- testFileInput = "/home/neo/Forks/plfa.github.io/src/plfa/part1/NaturalsRen.lagda.md"
@@ -17,11 +19,13 @@ import           Turtle.Prelude
 main :: IO ()
 main = do
   -- * find all files with .lagda.md extension under a folder
-  files <- sort
-    $ lsif (\_ -> return True) "/home/neo/Forks/plfa.github.io/src/plfa/part1/"
-  sequence_ $ putStrLn . encodeString <$> files
-
-  -- rewrite: traverse_ (putStrLn . encodeString) files
+  files <- TP.sort
+    $ lstree "/home/neo/Forks/plfa.github.io/src/plfa/"
+  let lagdaMdFiles = mfilter isLagdaMd $ encodeString <$> files
+  convertToLagda lagdaMdFiles
+    where
+      convertToLagda = traverse_ putStrLn
+      isLagdaMd = isSuffixOf ".lagda.md"
 
   -- * read content of all those files as Text
   -- and store both read location and content
