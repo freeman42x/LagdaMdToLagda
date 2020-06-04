@@ -34,11 +34,6 @@ main = do
         let convertedFileContent = convertText $ DT.pack fileContent
         writeFile lagdaFilePath $ DT.unpack convertedFileContent
 
-  -- * read content of all those files as Text
-  -- and store both read location and content
-  -- * fmap previous to a write location and converted content
-  -- * write previous to respective files
-
 
 
 --  HACK that does the job
