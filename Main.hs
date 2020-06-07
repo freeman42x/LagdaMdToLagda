@@ -15,7 +15,6 @@ import           System.IO.Strict              as SIS
 
 main :: IO ()
 main = do
-  -- * find all files with .lagda.md extension under a folder
   files <- TP.sort
     $ lstree "/home/neo/Forks/plfa.github.io/src/plfa/"
   let lagdaMdFiles = mfilter isLagdaMd $ encodeString <$> files
@@ -38,13 +37,13 @@ renameLagdaMdFileAndModule filePath = do
   renameFile old new
   fileContent <- SIS.readFile new
   let fileContentText = DT.pack fileContent
-  let fileName = fileNameFromPath new
+  let fileName = fileNameFromPath old
   let replaceOld = fileName <> " where"
   let replaceNew = fileName <> "Alternative where"
-  let newFileContent = DT.replace replaceOld replaceNew fileContentText
-  writeFile new fileContent
+  let newFileContent = DT.unpack $ DT.replace replaceOld replaceNew fileContentText
+  writeFile new newFileContent
 
--- renameLagdaMdFileAndModule "/home/neo/Forks/plfa.github.io/src/plfa/part1/Naturals.lagda.md"
+
 
 fileNameFromPath :: SI.FilePath -> Text
 fileNameFromPath filePath = DT.pack fileNameNoExtension
