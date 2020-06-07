@@ -22,8 +22,8 @@ main = do
     where
       conv = traverse_ convertToLagda
       isLagdaMd = isSuffixOf ".lagda.md"
-      convertToLagda filePath = withFile filePath ReadMode $ \handle -> do
-        fileContent <- hGetContents handle
+      convertToLagda filePath = do
+        fileContent <- readFile filePath
         let filePathText = DT.pack filePath
         let lagdaFilePath = DT.unpack $ DT.replace ".lagda.md" ".lagda" filePathText
         let convertedFileContent = convertText $ DT.pack fileContent
