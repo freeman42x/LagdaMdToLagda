@@ -11,6 +11,7 @@ import           Turtle
 import           Turtle.Prelude                as TP
 import           System.Directory
 import           System.IO                     as SI
+import           System.IO.Strict              as SIS
 
 main :: IO ()
 main = do
@@ -23,7 +24,7 @@ main = do
       conv = traverse_ convertToLagda
       isLagdaMd = isSuffixOf ".lagda.md"
       convertToLagda filePath = do
-        fileContent <- readFile filePath
+        fileContent <- SIS.readFile filePath
         let filePathText = DT.pack filePath
         let lagdaFilePath = DT.unpack $ DT.replace ".lagda.md" ".lagda" filePathText
         let convertedFileContent = convertText $ DT.pack fileContent
@@ -35,7 +36,7 @@ renameLagdaMdFileAndModule filePath = do
   let old = DT.unpack filePath
   let new = DT.unpack $ DT.replace ".lagda.md" "Alternative.lagda.md" filePath
   renameFile old new
-  fileContent <- readFile new
+  fileContent <- SIS.readFile new
   let fileContentText = DT.pack fileContent
   let fileName = fileNameFromPath new
   let replaceOld = fileName <> " where"

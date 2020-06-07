@@ -27,6 +27,7 @@ executable LagdaMdToLagda
                      , turtle
                      , directory
                      , filepath
+                     , strict
   -- hs-source-dirs:
   default-language:    Haskell2010
 
